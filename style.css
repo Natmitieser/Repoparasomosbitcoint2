@@ -1,0 +1,213 @@
+/* Reset y Fuente */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente más amigable */
+}
+
+body {
+    background-color: #0a0b10;
+    color: white;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* --- Fondo de Red --- */
+.network-bg {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(#2a2a35 1px, transparent 1px);
+    background-size: 30px 30px;
+    opacity: 0.3;
+    z-index: -2;
+}
+
+/* Partículas (Usuarios flotando) */
+.user-particle {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #00ffcc, #0088ff);
+    filter: blur(4px);
+    opacity: 0.6;
+    animation: floatAround 15s infinite linear;
+}
+.p1 { width: 10px; height: 10px; top: 20%; left: 20%; animation-duration: 12s; }
+.p2 { width: 15px; height: 15px; top: 70%; left: 80%; animation-duration: 18s; background: #ff9900; }
+.p3 { width: 8px; height: 8px; top: 40%; left: 80%; animation-duration: 20s; }
+.p4 { width: 12px; height: 12px; top: 80%; left: 30%; animation-duration: 15s; background: #ff0055; }
+
+@keyframes floatAround {
+    0% { transform: translate(0, 0); }
+    50% { transform: translate(20px, -20px); }
+    100% { transform: translate(0, 0); }
+}
+
+/* --- Tarjeta Principal --- */
+.container {
+    text-align: center;
+    padding: 2.5rem;
+    width: 90%;
+    max-width: 500px;
+    background: rgba(20, 20, 25, 0.7);
+    backdrop-filter: blur(15px);
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    position: relative;
+}
+
+/* Badge de "En Vivo" */
+.live-status {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1a1a1a;
+    border: 1px solid #333;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: #00ff88;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background-color: #00ff88;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #00ff88;
+    animation: blink 2s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Logo con efecto de "Onda" */
+.logo-wrapper {
+    position: relative;
+    width: 180px;
+    margin: 30px auto 20px;
+}
+
+.main-logo {
+    width: 100%;
+    position: relative;
+    z-index: 2;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+}
+
+.pulse-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 166, 0, 0.3);
+    animation: pulseBig 3s infinite;
+    z-index: 1;
+}
+
+@keyframes pulseBig {
+    0% { width: 100%; height: 100%; opacity: 1; }
+    100% { width: 160%; height: 160%; opacity: 0; }
+}
+
+/* Textos */
+.community-title {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    background: linear-gradient(to right, #fff, #aaa);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.intro-text {
+    color: #bbb;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+/* Roles Tags */
+.roles-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 30px;
+}
+
+.role-tag {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    color: #ffaa00;
+    transition: 0.3s;
+    cursor: default;
+}
+
+.role-tag:hover {
+    background: rgba(255, 170, 0, 0.1);
+    border-color: #ffaa00;
+    transform: translateY(-2px);
+}
+
+/* Botón Comunidad */
+.join-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(90deg, #00c853, #009624);
+    color: white;
+    text-decoration: none;
+    padding: 15px 25px;
+    border-radius: 15px;
+    font-weight: bold;
+    transition: transform 0.2s;
+    box-shadow: 0 10px 20px rgba(0, 200, 83, 0.3);
+}
+
+.join-btn:hover {
+    transform: scale(1.03);
+    box-shadow: 0 15px 30px rgba(0, 200, 83, 0.5);
+}
+
+.btn-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Avatares apilados en el botón */
+.member-stack {
+    display: flex;
+}
+.avatar {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 2px solid #009624;
+    margin-left: -10px; /* Efecto superpuesto */
+}
+
+.footer-note {
+    margin-top: 15px;
+    font-size: 0.75rem;
+    color: #555;
+}
