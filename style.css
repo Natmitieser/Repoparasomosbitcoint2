@@ -1,213 +1,111 @@
-/* Reset y Fuente */
-* {
+/* --- Configuración General --- */
+body {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente más amigable */
-}
-
-body {
-    background-color: #0a0b10;
-    color: white;
     height: 100vh;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
+    background-color: #000;
+    perspective: 1000px; /* Da profundidad a la escena 3D */
 }
 
-/* --- Fondo de Red --- */
-.network-bg {
+/* --- Fondo de la Calle con TV --- */
+body::before {
+    content: '';
     position: absolute;
-    inset: 0;
-    background-image: radial-gradient(#2a2a35 1px, transparent 1px);
-    background-size: 30px 30px;
-    opacity: 0.3;
-    z-index: -2;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    /* Asegúrate de que el nombre del archivo sea correcto */
+    background: url('fondo-tv.png') no-repeat center center/cover;
+    z-index: -1;
+    filter: brightness(0.8); /* Un poco más oscuro para que resalte el contenido */
 }
 
-/* Partículas (Usuarios flotando) */
-.user-particle {
-    position: absolute;
-    border-radius: 50%;
-    background: linear-gradient(45deg, #00ffcc, #0088ff);
-    filter: blur(4px);
-    opacity: 0.6;
-    animation: floatAround 15s infinite linear;
-}
-.p1 { width: 10px; height: 10px; top: 20%; left: 20%; animation-duration: 12s; }
-.p2 { width: 15px; height: 15px; top: 70%; left: 80%; animation-duration: 18s; background: #ff9900; }
-.p3 { width: 8px; height: 8px; top: 40%; left: 80%; animation-duration: 20s; }
-.p4 { width: 12px; height: 12px; top: 80%; left: 30%; animation-duration: 15s; background: #ff0055; }
-
-@keyframes floatAround {
-    0% { transform: translate(0, 0); }
-    50% { transform: translate(20px, -20px); }
-    100% { transform: translate(0, 0); }
-}
-
-/* --- Tarjeta Principal --- */
-.container {
-    text-align: center;
-    padding: 2.5rem;
-    width: 90%;
-    max-width: 500px;
-    background: rgba(20, 20, 25, 0.7);
-    backdrop-filter: blur(15px);
-    border-radius: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+/* --- Contenedor Principal 3D --- */
+.scene-container {
     position: relative;
-}
-
-/* Badge de "En Vivo" */
-.live-status {
-    position: absolute;
-    top: -15px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #1a1a1a;
-    border: 1px solid #333;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    color: #00ff88;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
-
-.dot {
-    width: 8px;
-    height: 8px;
-    background-color: #00ff88;
-    border-radius: 50%;
-    box-shadow: 0 0 10px #00ff88;
-    animation: blink 2s infinite;
-}
-
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-}
-
-/* Logo con efecto de "Onda" */
-.logo-wrapper {
-    position: relative;
-    width: 180px;
-    margin: 30px auto 20px;
-}
-
-.main-logo {
-    width: 100%;
-    position: relative;
-    z-index: 2;
-    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
-}
-
-.pulse-ring {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     width: 100%;
     height: 100%;
-    border-radius: 50%;
-    border: 2px solid rgba(255, 166, 0, 0.3);
-    animation: pulseBig 3s infinite;
-    z-index: 1;
-}
-
-@keyframes pulseBig {
-    0% { width: 100%; height: 100%; opacity: 1; }
-    100% { width: 160%; height: 160%; opacity: 0; }
-}
-
-/* Textos */
-.community-title {
-    font-size: 2rem;
-    font-weight: 800;
-    margin-bottom: 10px;
-    background: linear-gradient(to right, #fff, #aaa);
-    -webkit-background-clip: text;
-    color: transparent;
-}
-
-.intro-text {
-    color: #bbb;
-    font-size: 1rem;
-    line-height: 1.5;
-    margin-bottom: 20px;
-}
-
-/* Roles Tags */
-.roles-container {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 30px;
+    transform-style: preserve-3d; /* Permite que los hijos tengan profundidad */
 }
 
-.role-tag {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 6px 12px;
-    border-radius: 12px;
-    font-size: 0.85rem;
-    color: #ffaa00;
-    transition: 0.3s;
-    cursor: default;
+/* --- Contenido DENTRO de la Pantalla --- */
+.tv-screen-content {
+    position: absolute;
+    /* Ajuste fino para encajar en la pantalla de la TV de la imagen */
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%, -60%) translateZ(20px); /* translateZ lo acerca un poco */
+    width: 40%; /* Ancho relativo a la pantalla */
+    max-width: 500px;
+    height: auto;
+    /* Efecto de pantalla brillante */
+    box-shadow: 0 0 30px rgba(255, 166, 0, 0.2), inset 0 0 20px rgba(0,0,0,0.5);
+    border-radius: 5% / 10%; /* Curvatura sutil para la pantalla CRT */
+    overflow: hidden;
+    opacity: 0.9; /* Un poco transparente para integrarse */
+    mix-blend-mode: screen; /* Mezcla con el reflejo de la TV */
 }
 
-.role-tag:hover {
-    background: rgba(255, 170, 0, 0.1);
-    border-color: #ffaa00;
-    transform: translateY(-2px);
+.screen-image {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
-/* Botón Comunidad */
-.join-btn {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: linear-gradient(90deg, #00c853, #009624);
-    color: white;
-    text-decoration: none;
-    padding: 15px 25px;
+/* --- "Caja/Folleto" Futurista en el Suelo --- */
+.ground-box {
+    position: absolute;
+    bottom: 10%; /* Posición en el suelo */
+    transform: translateZ(50px) rotateX(15deg); /* Efecto 3D: más cerca y inclinado */
+    padding: 20px 40px;
+    background: rgba(0, 20, 40, 0.6);
+    border: 2px solid #00ffcc;
     border-radius: 15px;
+    box-shadow: 
+        0 10px 20px rgba(0,0,0,0.5),
+        0 0 30px rgba(0, 255, 204, 0.3),
+        inset 0 0 20px rgba(0, 255, 204, 0.1);
+    backdrop-filter: blur(10px);
+    text-align: center;
+}
+
+/* Resplandor debajo de la caja */
+.box-glow {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120%;
+    height: 30px;
+    background: radial-gradient(ellipse at center, rgba(0, 255, 204, 0.4) 0%, transparent 70%);
+    filter: blur(15px);
+    z-index: -1;
+}
+
+/* --- Botón de WhatsApp --- */
+.whatsapp-button {
+    display: inline-block;
+    text-decoration: none;
+    color: #000;
+    background: linear-gradient(90deg, #00ffcc, #00ff99);
+    padding: 15px 30px;
+    font-family: sans-serif;
     font-weight: bold;
-    transition: transform 0.2s;
-    box-shadow: 0 10px 20px rgba(0, 200, 83, 0.3);
+    font-size: 1.2rem;
+    border-radius: 30px;
+    box-shadow: 0 5px 15px rgba(0, 255, 153, 0.4);
+    transition: all 0.3s ease;
 }
 
-.join-btn:hover {
-    transform: scale(1.03);
-    box-shadow: 0 15px 30px rgba(0, 200, 83, 0.5);
-}
-
-.btn-content {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-/* Avatares apilados en el botón */
-.member-stack {
-    display: flex;
-}
-.avatar {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    border: 2px solid #009624;
-    margin-left: -10px; /* Efecto superpuesto */
-}
-
-.footer-note {
-    margin-top: 15px;
-    font-size: 0.75rem;
-    color: #555;
+.whatsapp-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(0, 255, 153, 0.7);
+    color: #fff;
 }
