@@ -3,58 +3,214 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Somos Bitcoin - Comunidad</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Somos Bitcoin | Genesis</title>
+    <style>
+        /* --- ESTÉTICA DE CINE / ATMÓSFERA --- */
+        :root {
+            --neon-color: #ffffff;
+            --accent-color: #ff9900; /* Naranja Bitcoin */
+            --bg-dark: #050505;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            color: white;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px; /* La clave del 3D en HTML */
+        }
+
+        /* Efecto de ruido (Film Grain) */
+        .noise-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj48ZmlsdGVyIGlkPSJnoiPjxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjY1IiBudW1PY3RhdmVzPSIzIiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI2cpIiBvcGFjaXR5PSIwLjA1Ii8+PC9zdmc+');
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.4;
+        }
+
+        /* Niebla ambiental */
+        .fog {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 100%, rgba(30, 40, 60, 0.4) 0%, transparent 60%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* --- EL MONOLITO (CONTENEDOR 3D) --- */
+        .scene-container {
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateX(0deg) rotateY(0deg); /* Se moverá con JS */
+            transition: transform 0.1s ease-out;
+            z-index: 10;
+        }
+
+        .glass-card {
+            width: 400px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px); /* Efecto vidrio esmerilado */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            box-shadow: 
+                0 0 0 1px rgba(0,0,0,0.5),
+                0 20px 50px rgba(0,0,0,0.8),
+                0 0 100px rgba(255, 153, 0, 0.1); /* Resplandor sutil naranja */
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Brillo metálico en el borde */
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: skewX(-25deg);
+            animation: shine 6s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            20% { left: 200%; }
+            100% { left: 200%; }
+        }
+
+        /* --- CONTENIDO --- */
+        .logo {
+            width: 180px;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+        }
+
+        h1 {
+            font-size: 14px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 10px;
+            font-weight: 400;
+        }
+
+        .main-text {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0 0 30px 0;
+            background: linear-gradient(to right, #fff, #aaa);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        /* Botón Minimalista Futurista */
+        .cta-btn {
+            display: inline-block;
+            text-decoration: none;
+            color: var(--bg-dark);
+            background: white;
+            padding: 15px 30px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            z-index: 2;
+        }
+
+        .cta-btn:hover {
+            background: var(--accent-color);
+            box-shadow: 0 0 30px var(--accent-color);
+            transform: scale(1.05);
+        }
+
+        /* --- UI DE "PANTALLA" (ESQUINAS) --- */
+        .ui-corner {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 10px;
+            letter-spacing: 1px;
+            font-family: 'Courier New', monospace;
+            z-index: 100;
+        }
+        .tl { top: 30px; left: 30px; border-left: 1px solid rgba(255,255,255,0.2); padding-left: 10px; }
+        .tr { top: 30px; right: 30px; text-align: right; }
+        .bl { bottom: 30px; left: 30px; }
+        .br { bottom: 30px; right: 30px; display: flex; gap: 20px; }
+
+        .status-dot {
+            width: 6px; height: 6px; background: #00ff66; border-radius: 50%; display: inline-block;
+            box-shadow: 0 0 10px #00ff66; animation: blink 2s infinite;
+        }
+        
+        @keyframes blink { 50% { opacity: 0.3; } }
+
+    </style>
 </head>
 <body>
 
-    <div class="network-bg"></div>
+    <div class="noise-overlay"></div>
     
-    <div class="user-particle p1"></div>
-    <div class="user-particle p2"></div>
-    <div class="user-particle p3"></div>
-    <div class="user-particle p4"></div>
+    <div class="fog"></div>
 
-    <main class="container">
-        <div class="live-status">
-            <span class="dot"></span> +450 Bitcoiners conectados
-        </div>
+    <div class="ui-corner tl">
+        SYSTEM: ONLINE<br>
+        LOC: GLOBAL_NODE
+    </div>
+    <div class="ui-corner tr">
+        SOMOS BITCOIN<br>
+        EST. 2025
+    </div>
+    <div class="ui-corner bl">
+        PROTOCOL: V1.0.4
+    </div>
+    <div class="ui-corner br">
+        <span><span class="status-dot"></span> LIVE NETWORK</span>
+        <span>743 MEMBERS</span>
+    </div>
 
-        <div class="logo-wrapper">
-            <div class="pulse-ring"></div> <img src="logo-futurista.png" alt="Somos Bitcoin Logo" class="main-logo">
-        </div>
-
-        <div class="content">
-            <h1 class="community-title">Tu Tribu Descentralizada</h1>
+    <div class="scene-container" id="card">
+        <div class="glass-card">
+            <img src="logo-futurista.png" alt="Somos Bitcoin" class="logo">
             
-            <p class="intro-text">
-                No es un curso. No es una academia.<br>
-                Es el <b>nodo central</b> donde conectamos todos.
-            </p>
+            <h1>Comunidad Oficial</h1>
+            <p class="main-text">Conectando el Futuro.</p>
 
-            <div class="roles-container">
-                <span class="role-tag">⛏️ Mineros</span>
-                <span class="role-tag">📈 Traders</span>
-                <span class="role-tag">💻 Devs</span>
-                <span class="role-tag">🎨 Creators</span>
-            </div>
-
-            <a href="https://chat.whatsapp.com/L6JB2aAfDWuLN3ZOQHQAfW" target="_blank" class="join-btn">
-                <div class="btn-content">
-                    <span class="icon">🚀</span>
-                    <span>ENTRAR A LA COMUNIDAD</span>
-                </div>
-                <div class="member-stack">
-                    <div class="avatar" style="background: #ffcc00;"></div>
-                    <div class="avatar" style="background: #00ccff;"></div>
-                    <div class="avatar" style="background: #ff6600;"></div>
-                </div>
+            <a href="https://chat.whatsapp.com/L6JB2aAfDWuLN3ZOQHQAfW" target="_blank" class="cta-btn">
+                Acceder al Nodo
             </a>
-            
-            <p class="footer-note">Acceso 100% Gratuito • Sin Spam</p>
         </div>
-    </main>
+    </div>
 
-    <script src="script.js"></script>
+    <script>
+        // --- EFECTO DE MOVIMIENTO 3D (PARALLAX) ---
+        // Esto hace que la tarjeta se incline siguiendo tu mouse
+        
+        const card = document.getElementById('card');
+        const container = document.body;
+
+        container.addEventListener('mousemove', (e) => {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 25; // Divide para suavizar
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+            
+            // Aplicar la rotación
+            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        });
+
+        // Restaurar posición al salir
+        container.addEventListener('mouseleave', () => {
+            card.style.transform = `rotateY(0deg) rotateX(0deg)`;
+        });
+    </script>
 </body>
 </html>
